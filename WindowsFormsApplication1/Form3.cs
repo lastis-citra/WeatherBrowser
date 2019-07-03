@@ -430,8 +430,7 @@ namespace WeatherBrowser
                     {
                         string url_1 = "http:" + node["href"];
                         url_array1.Add(url_1);
-                        MessageBox.Show(url_1);
-                        //MessageBox.Show(node.InnerText);
+                        //MessageBox.Show(url_1);
                     }
                 }
                 catch (Exception e2)
