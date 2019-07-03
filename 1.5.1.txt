@@ -1,0 +1,2 @@
+2018/10/21 対象フレームワークを.Net Framework 3.5から4.5に変更
+2018/10/21 TLS 1.2に対応（https://qiita.com/tanj/items/31a0fd6b188952886de5）
