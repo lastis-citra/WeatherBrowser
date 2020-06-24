@@ -1055,8 +1055,14 @@ namespace WeatherBrowser
                         {
                             continue;
                         }
-                        //MessageBox.Show(child.ChildNodes[0].Attributes["class"]);
-                        if (child.ChildNodes[0].Attributes["class"] == "is-normal")
+                        // child.ChildNodes[0].Attributes["class"]がなぜか取れないときがあるので
+                        if (child.ChildNodes[0].InnerText == "発表なし")
+                        {
+                            // 発表なしなら何もしない
+                            break;
+                        }
+                        MessageBox.Show(child.ChildNodes[0].Attributes["class"]);
+                        if (child.ChildNodes[0].Attributes["class"] == "icoNormal")
                         {
                             // 発表なしなら何もしない
                             break;
