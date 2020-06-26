@@ -1061,7 +1061,7 @@ namespace WeatherBrowser
                             // 発表なしなら何もしない
                             break;
                         }
-                        MessageBox.Show(child.ChildNodes[0].Attributes["class"]);
+                        //MessageBox.Show(child.ChildNodes[0].Attributes["class"]);
                         if (child.ChildNodes[0].Attributes["class"] == "icoNormal")
                         {
                             // 発表なしなら何もしない
