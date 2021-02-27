@@ -1149,7 +1149,7 @@ namespace WeatherBrowser
             // v1.5からyahooに変更
             nodeList = prefectureDoc.GetNodesByAttribute("text jsoff");
             //nodeList = doc8.GetNodesByAttribute("forecast-comment");
-            textBox1.Text = nodeList[0].InnerText.Replace("<br />", "\r\n").Replace("<br>", "\r\n");
+            textBox1.Text = nodeList[0].InnerText.Replace("<br/>", "\r\n").Replace("<br />", "\r\n").Replace("<br>", "\r\n").Replace(" ", "");
 
             // 天気概況更新日時
             // v1.5からyahooに変更
