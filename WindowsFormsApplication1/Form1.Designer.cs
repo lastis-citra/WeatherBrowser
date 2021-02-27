@@ -70,7 +70,7 @@
             this.バージョン情報AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.listView3 = new System.Windows.Forms.ListView();
+            this.listViewWarnNotice = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -116,6 +116,7 @@
             this.listView1.ContextMenuStrip = this.contextMenuStrip2;
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 56);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(505, 300);
@@ -203,6 +204,7 @@
             this.listView2.ContextMenuStrip = this.contextMenuStrip1;
             this.listView2.GridLines = true;
             this.listView2.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView2.HideSelection = false;
             this.listView2.Location = new System.Drawing.Point(11, 377);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(506, 164);
@@ -399,9 +401,9 @@
             this.label4.Size = new System.Drawing.Size(0, 12);
             this.label4.TabIndex = 8;
             // 
-            // listView3
+            // listViewWarnNotice
             // 
-            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewWarnNotice.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
@@ -412,15 +414,16 @@
             this.columnHeader8,
             this.columnHeader9,
             this.columnHeader10});
-            this.listView3.GridLines = true;
-            this.listView3.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.listView3.Location = new System.Drawing.Point(12, 562);
-            this.listView3.Name = "listView3";
-            this.listView3.Scrollable = false;
-            this.listView3.Size = new System.Drawing.Size(505, 36);
-            this.listView3.TabIndex = 9;
-            this.listView3.UseCompatibleStateImageBehavior = false;
-            this.listView3.View = System.Windows.Forms.View.Details;
+            this.listViewWarnNotice.GridLines = true;
+            this.listViewWarnNotice.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewWarnNotice.HideSelection = false;
+            this.listViewWarnNotice.Location = new System.Drawing.Point(12, 562);
+            this.listViewWarnNotice.Name = "listViewWarnNotice";
+            this.listViewWarnNotice.Scrollable = false;
+            this.listViewWarnNotice.Size = new System.Drawing.Size(505, 36);
+            this.listViewWarnNotice.TabIndex = 9;
+            this.listViewWarnNotice.UseCompatibleStateImageBehavior = false;
+            this.listViewWarnNotice.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -536,7 +539,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.listView3);
+            this.Controls.Add(this.listViewWarnNotice);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -601,7 +604,7 @@
         private System.Windows.Forms.ToolStripMenuItem 設定OToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 履歴BToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ListView listViewWarnNotice;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;

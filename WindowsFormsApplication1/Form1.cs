@@ -1287,53 +1287,7 @@ namespace WeatherBrowser
 
             //-------------------------------------------------------
             // 警報・注意報
-            //FontStyle boldFontStyle = listView3.Font.Style | FontStyle.Bold;
-            //Font boldFont = new Font(listView3.Font.Name, listView3.Font.Size, boldFontStyle);
-
-            // UseItemStyleForSubItemsをfalseにする
-            // subitemごとに色を付け替えるため
-            listView3.Items[0].UseItemStyleForSubItems = false;
-            listView3.Items[1].UseItemStyleForSubItems = false;
-
-            Color specialColor = Color.FromArgb(148, 0, 211);
-            Color warningColor = Color.FromArgb(204, 0, 0);
-            Color noticeColor = Color.FromArgb(255, 217, 102);
-
-            string filePath4 = @"./cache/listview3_" + st_n + ".cache";
-            StreamWriter sw4 = new StreamWriter(filePath4, false, Encoding.GetEncoding(65001));
-
-            sw4.Write(
-                label5.Text + "," +
-                label6.Text + "\n"
-                );
-
-            for (int j = 0; j < 2; j++)
-            {
-                for (int k = 0; k < 9; k++)
-                {
-                    sw4.Write(notice_array[j, k] + "," + warning_array[j, k] + "," + special_array[j, k] + "\n");
-
-                    if (notice_array[j,k])
-                    {
-                        listView3.Items[j].SubItems[k + 1].BackColor = noticeColor;
-                    }
-                    else if (warning_array[j, k])
-                    {
-                        listView3.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                        listView3.Items[j].SubItems[k + 1].BackColor = warningColor;
-                    }
-                    else if (special_array[j, k])
-                    {
-                        listView3.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                        listView3.Items[j].SubItems[k + 1].BackColor = specialColor;
-                    }
-                    else
-                    {
-                        listView3.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
-                    }
-                }
-            }
-            sw4.Close();
+            displayCacheWarnAndNotice(st_n);
 
             string filePath5 = @"./cache/textbox1_" + st_l + ".cache";
             StreamWriter sw5 = new StreamWriter(filePath5, false, Encoding.GetEncoding(65001));
@@ -1346,6 +1300,57 @@ namespace WeatherBrowser
 
             button1.Enabled = true;
             button1.Text = "情報取得";
+        }
+
+        /*
+         * 警報・注意報の情報を取得
+         */
+        private void displayCacheWarnAndNotice(string st_n)
+        {
+            // UseItemStyleForSubItemsをfalseにする
+            // subitemごとに色を付け替えるため
+            listViewWarnNotice.Items[0].UseItemStyleForSubItems = false;
+            listViewWarnNotice.Items[1].UseItemStyleForSubItems = false;
+
+            Color specialColor = Color.FromArgb(148, 0, 211);
+            Color warningColor = Color.FromArgb(204, 0, 0);
+            Color noticeColor = Color.FromArgb(255, 217, 102);
+
+            string filePath = @"./cache/listview3_" + st_n + ".cache";
+            StreamWriter sw = new StreamWriter(filePath, false, Encoding.GetEncoding(65001));
+
+            sw.Write(
+                label5.Text + "," +
+                label6.Text + "\n"
+                );
+
+            for (int j = 0; j < 2; j++)
+            {
+                for (int k = 0; k < 9; k++)
+                {
+                    sw.Write(notice_array[j, k] + "," + warning_array[j, k] + "," + special_array[j, k] + "\n");
+
+                    if (notice_array[j, k])
+                    {
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
+                    }
+                    else if (warning_array[j, k])
+                    {
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
+                    }
+                    else if (special_array[j, k])
+                    {
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                    }
+                    else
+                    {
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
+                    }
+                }
+            }
+            sw.Close();
         }
 
         /*
@@ -1378,25 +1383,31 @@ namespace WeatherBrowser
          */
         private void getRegionIconListView2(CreteLib.HtmlDocument regionDoc, ref List<string> ico_array2)
         {
-            HtmlNodeList pNodeList = regionDoc.GetNodesByTagName("p");
-
-            // class属性にpictを含むもののみ取得する
-            foreach (HtmlNode node in pNodeList)
+            try
             {
-                if (node.Attributes.ContainsKey("class"))
+                HtmlNodeList pNodeList = regionDoc.GetNodesByTagName("p");
+
+                // class属性にpictを含むもののみ取得する
+                foreach (HtmlNode node in pNodeList)
                 {
-                    if (node["class"].Contains("pict"))
+                    if (node.Attributes.ContainsKey("class"))
                     {
-                        HtmlNode childNode = node.ChildNodes[0];
+                    if (node["class"].Contains("pict"))
+                        {
+                        HtmlNode childNode = node.ChildNodes[1];
                         string img = childNode["src"];
                         string[] tmp = img.Split('/');
                         ico_array2.Add(tmp[8]);
-                        //MessageBox.Show(tmp[8]);
+                        }
                     }
                 }
             }
-
-        }
+            catch
+            {
+                ico_array2.Add("");
+                ico_array2.Add("");
+            }
+}
 
         /*
          * 週間天気用の今日明日の天気情報を取得
@@ -1412,7 +1423,7 @@ namespace WeatherBrowser
                 {
                     if (node["class"].Contains("pict"))
                     {
-                        HtmlNode childNode = node.ChildNodes[0];
+                        HtmlNode childNode = node.ChildNodes[1];
                         weather_array2.Add(childNode["alt"]);
                         //MessageBox.Show(childNode["alt"]);
                     }
@@ -2180,8 +2191,8 @@ namespace WeatherBrowser
 
                 // UseItemStyleForSubItemsをfalseにする
                 // subitemごとに色を付け替えるため
-                listView3.Items[0].UseItemStyleForSubItems = false;
-                listView3.Items[1].UseItemStyleForSubItems = false;
+                listViewWarnNotice.Items[0].UseItemStyleForSubItems = false;
+                listViewWarnNotice.Items[1].UseItemStyleForSubItems = false;
 
                 using (parser)
                 {
@@ -2210,21 +2221,21 @@ namespace WeatherBrowser
                         {
                             if (row.Length > 2 && row[2].Equals("True"))
                             {
-                                    listView3.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                                    listView3.Items[j].SubItems[k + 1].BackColor = specialColor;
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
                             }
                             else if (row[1].Equals("True"))
                             {
-                                listView3.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                                listView3.Items[j].SubItems[k + 1].BackColor = warningColor;
+                                listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                                listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
                             }
                             else if (row[0].Equals("True"))
                             {
-                                listView3.Items[j].SubItems[k + 1].BackColor = noticeColor;
+                                listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
                             }
                             else
                             {
-                                listView3.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
+                                listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
                             }
 
                             if (k < 8)
@@ -2603,7 +2614,7 @@ namespace WeatherBrowser
 
         private void ResetListView3()
         {
-            listView3.Items.Clear();
+            listViewWarnNotice.Items.Clear();
 
             // デフォルトで警報・注意報の文字列を入れておく
             // 1つ目のアイテムはalign=centerにできないため、空欄にしてごまかす
@@ -2619,7 +2630,7 @@ namespace WeatherBrowser
             list_item3.Add("波浪");
             list_item3.Add("高潮");
 
-            listView3.Items.Add(new ListViewItem(list_item3.ToArray()));
+            listViewWarnNotice.Items.Add(new ListViewItem(list_item3.ToArray()));
             list_item3.Clear();
 
             list_item3.Add("");
@@ -2633,7 +2644,7 @@ namespace WeatherBrowser
             list_item3.Add("着氷");
             list_item3.Add("着雪");
 
-            listView3.Items.Add(new ListViewItem(list_item3.ToArray()));
+            listViewWarnNotice.Items.Add(new ListViewItem(list_item3.ToArray()));
             list_item3.Clear();
         }
 
