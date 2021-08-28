@@ -872,7 +872,7 @@ namespace WeatherBrowser
             foreach (HtmlNode node in nodeList)
             {
                 //if (node.InnerText.Contains("時"))
-                // ～時の直後に天気が8個続く
+                // 【今日・明日】～時の直後に天気が8個続く
                 if (Regex.IsMatch(node.InnerText, @"^[0-9]+時"))
                 {
                     time_array.Add(node.InnerText);
@@ -880,7 +880,7 @@ namespace WeatherBrowser
                 }
                 else if (weather_flag)
                 {
-                    // ここから天気
+                    // 【今日・明日】ここから天気
                     if (!node.InnerText.Contains("天気"))
                     {
                         if (node.InnerText.Length != 0)
@@ -909,7 +909,7 @@ namespace WeatherBrowser
                 }
                 else if (temp_flag2)
                 {
-                    // ここから気温
+                    // 【今日・明日】ここから気温
                     if (node.InnerText.Length != 0)
                     {
                         //MessageBox.Show(node.InnerText);
@@ -928,7 +928,7 @@ namespace WeatherBrowser
                 }
                 else if (wet_flag2)
                 {
-                    // ここから湿度
+                    // 【今日・明日】ここから湿度
                     if (node.InnerText.Length != 0)
                     {
                         wet_array.Add(node.InnerText);
@@ -946,7 +946,7 @@ namespace WeatherBrowser
                 }
                 else if (rain_flag)
                 {
-                    // ここから降水量
+                    // 【今日・明日】ここから降水量
                     if (node.InnerText.Length != 0)
                     {
                         rain_array.Add(node.InnerText);
@@ -964,14 +964,18 @@ namespace WeatherBrowser
                 }
                 else if (winddr_flag)
                 {
-                    // 風向と風速は同時
-                    if (node.InnerText.Length > 5)
+                    //MessageBox.Show(node.InnerText);
+                    //MessageBox.Show(node.InnerText.Length.ToString());
+                    // 【今日・明日】風向と風速は同時
+                    if (node.InnerText.Length > 47)
                     {
                         string[] st1 = node.InnerText.Split('<');
                         string[] st2 = node.InnerText.Split('>');
 
-                        winddr_array.Add(st1[0]);
-                        windst_array.Add(st2[1]);
+                        //MessageBox.Show(st1[0].Trim());
+                        //MessageBox.Show(st2[1].Trim());
+                        winddr_array.Add(st1[0].Trim());
+                        windst_array.Add(st2[1].Trim());
                     }
 
                     i++;
@@ -1111,13 +1115,14 @@ namespace WeatherBrowser
             nodeList = pinpointDoc.GetNodesByTagName("p");
             foreach (HtmlNode node in nodeList)
             {
+                //MessageBox.Show(node.InnerText);
                 if (node.InnerText.Contains("発表"))
                 {
                     if (i == 0)
                     {
-                        string[] st1 = node.InnerText.Split('\n');
+                        //string[] st1 = node.InnerText.Split('\n');
                         // 今日明日の天気の日時
-                        label3.Text = st1[1];
+                        label3.Text = node.InnerText;
 
                         //Regex reg = new Regex("(?<year_month>.*?)月");
                         //Match m = reg.Match(node.InnerText);
@@ -2425,13 +2430,13 @@ namespace WeatherBrowser
                 listView1.Items[i].SubItems[6].BackColor = Properties.Settings.Default.color_min_rain;
             }
             // 風速の上値
-            if (Properties.Settings.Default.bool_max_wind && windst_array[i] != "---" && 
+            if (Properties.Settings.Default.bool_max_wind && windst_array[i] != "---" &&
                 int.Parse(windst_array[i]) >= int.Parse(Properties.Settings.Default.max_wind))
             {
                 listView1.Items[i].SubItems[8].BackColor = Properties.Settings.Default.color_max_wind;
             }
             // 風速の下値
-            if (Properties.Settings.Default.bool_min_wind && windst_array[i] != "---" && 
+            if (Properties.Settings.Default.bool_min_wind && windst_array[i] != "---" &&
                 int.Parse(windst_array[i]) <= int.Parse(Properties.Settings.Default.min_wind))
             {
                 listView1.Items[i].SubItems[8].BackColor = Properties.Settings.Default.color_min_wind;
