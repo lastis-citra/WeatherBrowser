@@ -564,17 +564,18 @@ namespace WeatherBrowser
 
             int date_count = 0;
 
+            // 今日明日の日付
             foreach (HtmlNode node in nodeList)
             {
                 if (node.Attributes.ContainsValue("yjSt") && node.InnerText.Contains("月"))
                 {
-                    string tmp_date = node.InnerText.Replace('-', ' ');
+                    string date_text = node.ChildNodes[0].InnerText.Replace('-', ' ').Trim() + node.ChildNodes[1].InnerText + node.ChildNodes[2].InnerText;
                     for (int k = 0; k < 8; k++)
                     {
-                        date_array.Add(tmp_date.Trim());
+                        date_array.Add(date_text);
                     }
                     // date_array2にも1回分ずつ入れておく
-                    date_array2.Add(tmp_date.Trim());
+                    date_array2.Add(date_text);
                     date_count++;
 
                     if (date_count >= 2)
@@ -985,20 +986,28 @@ namespace WeatherBrowser
                         i = 0;
                     }
                 }
+                // ここから週間天気の日付の残り6つ
                 else if (node.InnerText.Equals("日付"))
                 {
                     date_flag3 = true;
                 }
                 else if (date_flag3)
                 {
-                    if (node.ChildNodes.Count > 3)
-                    {
-                        date_array2.Add(node.ChildNodes[0].InnerText + node.ChildNodes[2].InnerText + node.ChildNodes[3].InnerText + node.ChildNodes[4].InnerText);
-                    }
-                    else
-                    {
-                        date_array2.Add(node.ChildNodes[0].InnerText + node.ChildNodes[2].InnerText);
-                    }
+                    //MessageBox.Show(node.ChildNodes[3].InnerText);
+                    //if (node.ChildNodes.Count > 3)
+                    //if (node.ChildNodes.Count > 3)
+                        //{
+                        string date_text = node.ChildNodes[0].InnerText.Trim() + node.ChildNodes[2].InnerText.Trim() 
+                                            + node.ChildNodes[3].InnerText.Trim() + node.ChildNodes[4].InnerText.Trim();
+                        //MessageBox.Show(date_text);
+                        date_array2.Add(date_text);
+                    //}
+                    //else
+                    //{
+                    //    string date_text = node.ChildNodes[0].InnerText + node.ChildNodes[2].InnerText;
+                    //    MessageBox.Show(date_text);
+                    //    date_array2.Add(date_text);
+                    //}
                     i++;
                     if (i == 6)
                     {
