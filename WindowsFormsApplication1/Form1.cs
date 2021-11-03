@@ -85,7 +85,7 @@ namespace WeatherBrowser
                 System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal);
 
             // 設定ファイルがなければ，前のバージョンから引き継ぐ
-            if (!System.IO.File.Exists(config.FilePath))
+            if (!File.Exists(config.FilePath))
             {
                 Properties.Settings.Default.Upgrade();
             }
@@ -100,7 +100,7 @@ namespace WeatherBrowser
             }
 
             // cacheフォルダがない場合は作成する
-            if (!System.IO.Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "/cache/"))
+            if (!Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "/cache/"))
             {
                 System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/cache/");
             }
@@ -198,7 +198,7 @@ namespace WeatherBrowser
             try
             {
                 TextFieldParser parser = new TextFieldParser("regionlist3.csv",
-                    System.Text.Encoding.GetEncoding("Shift_JIS"));
+                    Encoding.GetEncoding("Shift_JIS"));
 
                 string _l_name = "";
                 string _m_name = "";
@@ -225,7 +225,7 @@ namespace WeatherBrowser
                 }
 
                 parser = new TextFieldParser("regionlist2.csv",
-                    System.Text.Encoding.GetEncoding("Shift_JIS"));
+                    Encoding.GetEncoding("Shift_JIS"));
 
                 using (parser)
                 {
@@ -245,7 +245,7 @@ namespace WeatherBrowser
                 }
 
                 parser = new TextFieldParser("regionlist1.csv",
-                    System.Text.Encoding.GetEncoding("Shift_JIS"));
+                    Encoding.GetEncoding("Shift_JIS"));
 
                 using (parser)
                 {
