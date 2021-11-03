@@ -426,11 +426,12 @@ namespace WeatherBrowser
                 // href属性のないaがあるので、try-catchにしておく
                 try
                 {
-                    if (Regex.IsMatch(node["href"], @"^//weather.yahoo.co.jp/weather/jp/\d[\dabcd]*/"))
+                    MessageBox.Show(node["href"]);
+                    if (Regex.IsMatch(node["href"], @"^https://weather.yahoo.co.jp/weather/jp/\d[\dabcd]*/"))
                     {
-                        string url_1 = "http:" + node["href"];
+                        string url_1 = node["href"];
                         url_array1.Add(url_1);
-                        //MessageBox.Show(url_1);
+                        MessageBox.Show(url_1);
                     }
                 }
                 catch (Exception e2)
