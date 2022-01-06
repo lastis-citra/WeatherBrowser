@@ -1233,6 +1233,9 @@ namespace WeatherBrowser
                 gray_num2 + "\n"
                 );
 
+            int min_min_temp = 100;
+            int max_max_temp = -100;
+
             // 7日後の予報がまだ発表されていない時間帯があるので，iの最大値を固定にできない
             for (i = 0; i < date_array2.Count; i++)
             {
@@ -1273,6 +1276,9 @@ namespace WeatherBrowser
                 DispListView2(date_array2[i], weather_array2[i], max_temp_array2[i], min_temp_array2[i],
                     rain_array2[i], wash_array[i], ul_vio_array[i], umb_array[i], star_array[i], ico_array2[i]);
 
+                if (int.Parse(min_temp_array2[i]) < min_min_temp) { min_min_temp = int.Parse(min_temp_array2[i]); }
+                if (int.Parse(max_temp_array2[i]) > max_max_temp) { max_max_temp = int.Parse(max_temp_array2[i]); }
+
                 // キャッシュデータの書き出し
                 sw3.Write(
                     date_array2[i] + "," +
@@ -1287,16 +1293,38 @@ namespace WeatherBrowser
                     ico_array2[i] + "\n"
                     );
 
+                // listView2の天気アイコンを変更
+                //this.ChangeWeatherIcon2(weather_array2[i], i);
+                ChangeWeatherIconListView2(ico_array2[i], i);
+            }
+
+            if (Properties.Settings.Default.auto_change_temp)
+            {
+                Properties.Settings.Default.max_max_temp =  max_max_temp.ToString();
+                Properties.Settings.Default.max_min_temp = (max_max_temp - 5).ToString();
+                Properties.Settings.Default.min_max_temp = (max_max_temp - 5).ToString();
+                Properties.Settings.Default.min_min_temp = (max_max_temp - 10).ToString();
+
+
+                for (i = 0; i < date_array.Count; i++)
+                {
+                    // UseItemStyleForSubItemsをfalseにする
+                    // subitemごとに色を付け替えるため
+                    listView1.Items[i].UseItemStyleForSubItems = false;
+
+                    ChangeColorView1(i);
+                }
+            }
+
+            for (i = 0; i < date_array2.Count; i++)
+            {
                 // UseItemStyleForSubItemsをfalseにする
                 // subitemごとに色を付け替えるため
                 listView2.Items[i].UseItemStyleForSubItems = false;
 
                 ChangeColorView2(i);
-
-                // listView2の天気アイコンを変更
-                //this.ChangeWeatherIcon2(weather_array2[i], i);
-                ChangeWeatherIconListView2(ico_array2[i], i);
             }
+
             sw3.Close();
 
             //-------------------------------------------------------
@@ -2151,6 +2179,9 @@ namespace WeatherBrowser
                 umb_array.Clear();
                 star_array.Clear();
 
+                int min_min_temp = 100;
+                int max_max_temp = -100;
+
                 using (parser)
                 {
                     parser.TextFieldType = FieldType.Delimited;
@@ -2179,16 +2210,50 @@ namespace WeatherBrowser
                             umb_array.Add(row[7]);
                             star_array.Add(row[8]);
 
-                            // UseItemStyleForSubItemsをfalseにする
-                            // subitemごとに色を付け替えるため
-                            listView2.Items[i].UseItemStyleForSubItems = false;
-
-                            ChangeColorView2(i);
+                            if (int.Parse(row[3]) < min_min_temp) { min_min_temp = int.Parse(row[3]); }
+                            if (int.Parse(row[2]) > max_max_temp) { max_max_temp = int.Parse(row[2]); }
 
                             //this.ChangeWeatherIcon2(row[1], i);
                             ChangeWeatherIconListView2(row[9], i);
                         }
                         i++;
+                    }
+                }
+
+                if (Properties.Settings.Default.auto_change_temp)
+                {
+                    Properties.Settings.Default.max_max_temp = max_max_temp.ToString();
+                    Properties.Settings.Default.max_min_temp = (max_max_temp - 5).ToString();
+                    Properties.Settings.Default.min_max_temp = (max_max_temp - 5).ToString();
+                    Properties.Settings.Default.min_min_temp = (max_max_temp - 10).ToString();
+
+                    parser = new TextFieldParser(filePath2, System.Text.Encoding.GetEncoding(65001));
+
+                    using (parser)
+                    {
+                        parser.TextFieldType = FieldType.Delimited;
+                        parser.SetDelimiters(","); // 区切り文字はコンマ
+
+                        i = -1;
+
+                        while (!parser.EndOfData)
+                        {
+                            string[] row = parser.ReadFields(); // 1行読み込み
+
+                            if (i != -1)
+                            {
+                                // UseItemStyleForSubItemsをfalseにする
+                                // subitemごとに色を付け替えるため
+                                listView2.Items[i].UseItemStyleForSubItems = false;
+
+                                ChangeColorView2(i);
+                            }
+                            i++;
+                        }
+                    }
+                    for(i = 0; i < listView1.Items.Count; i++)
+                    {
+                        ChangeColorView1(i);
                     }
                 }
             }

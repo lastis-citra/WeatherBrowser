@@ -814,5 +814,17 @@ namespace WeatherBrowser.Properties {
                 this["back_n_name"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool auto_change_temp {
+            get {
+                return ((bool)(this["auto_change_temp"]));
+            }
+            set {
+                this["auto_change_temp"] = value;
+            }
+        }
     }
 }

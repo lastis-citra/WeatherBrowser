@@ -198,6 +198,7 @@ namespace WeatherBrowser
             dataGridView1.RowHeadersWidthSizeMode =
                 DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
+            checkBox1.Checked = Properties.Settings.Default.auto_change_temp;
 
             try
             {
@@ -897,6 +898,8 @@ namespace WeatherBrowser
             Properties.Settings.Default.color_min_umb       = (System.Drawing.Color)dataGridView1.Rows[15].Cells[3].Style.BackColor;
             Properties.Settings.Default.color_max_star      = (System.Drawing.Color)dataGridView1.Rows[16].Cells[3].Style.BackColor;
             Properties.Settings.Default.color_min_star      = (System.Drawing.Color)dataGridView1.Rows[17].Cells[3].Style.BackColor;
+
+            Properties.Settings.Default.auto_change_temp = checkBox1.Checked;
             Properties.Settings.Default.Save();
 
             Form1.url_smallregion = url_array3[l][m][n];
