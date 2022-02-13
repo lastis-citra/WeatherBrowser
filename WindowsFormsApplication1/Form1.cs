@@ -623,22 +623,25 @@ namespace WeatherBrowser
             // 今日明日の最高気温、最低気温
             foreach (HtmlNode node in nodeList)
             {
-                //MessageBox.Show(node.InnerText);
-                switch (i)
+                if (node.ParentNode.TagName == "li")
                 {
-                    case 0:
-                    case 2:
-                        //MessageBox.Show(node.InnerText);
-                        max_temp_array2.Add(node.InnerText);
-                        break;
-                    case 1:
-                    case 3:
-                        min_temp_array2.Add(node.InnerText);
-                        break;
-                    default:
-                        break;
+                    //MessageBox.Show(node.InnerText);
+                    switch (i)
+                    {
+                        case 0:
+                        case 2:
+                            //MessageBox.Show(node.InnerText);
+                            max_temp_array2.Add(node.InnerText);
+                            break;
+                        case 1:
+                        case 3:
+                            min_temp_array2.Add(node.InnerText);
+                            break;
+                        default:
+                            break;
+                    }
+                    i++;
                 }
-                i++;
             }
                        
             i = 0;
