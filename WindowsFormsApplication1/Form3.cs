@@ -50,7 +50,7 @@ namespace WeatherBrowser
             DataGridViewComboBoxCell temp_cell2 = new DataGridViewComboBoxCell();
             DataGridViewComboBoxCell temp_cell3 = new DataGridViewComboBoxCell();
             DataGridViewComboBoxCell temp_cell4 = new DataGridViewComboBoxCell();
-            for (int i = -20; i <= 35; i += 1)
+            for (int i = -30; i <= 45; i += 1)
             {
                 temp_cell1.Items.Add(i.ToString());
                 temp_cell2.Items.Add(i.ToString());

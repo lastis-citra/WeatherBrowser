@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("lastis")]
 [assembly: AssemblyProduct("WeatherBrowser")]
-[assembly: AssemblyCopyright("Copyright © 2010-2022 lastis")]
+[assembly: AssemblyCopyright("Copyright © 2010-2023 lastis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.1")]
+[assembly: AssemblyVersion("1.8.3")]
 //[assembly: AssemblyFileVersion("1.0.0.0")]
