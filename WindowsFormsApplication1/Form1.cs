@@ -708,12 +708,14 @@ namespace WeatherBrowser
             // 先にgray_numとmax_numの最大値を求めてしまう（v1.4.3）
             foreach (HtmlNode node in nodeList)
             {
+                //MessageBox.Show(node.InnerText);
                 // ～時の直後に天気が複数個続く
-                if (Regex.IsMatch(node.InnerText, @"^[0-9]+時"))
+                if (Regex.IsMatch(node.InnerText, @"[0-9]+時"))
                 {
                     // gray_numの算出
                     if (node.Attributes["color"] == "#999999")
                     {
+                        //MessageBox.Show(node.InnerText);
                         gray_num++;
                     }
                 }
@@ -738,6 +740,7 @@ namespace WeatherBrowser
                 max_temp_flag3 = true;
                 i = 0;
             }
+            //MessageBox.Show(gray_num.ToString());
 
             foreach (HtmlNode node in nodeList)
             {
@@ -745,9 +748,10 @@ namespace WeatherBrowser
                 //MessageBox.Show(node.Attributes["color"]);
 
                 // ～時の直後に天気が複数個続く
-                if (Regex.IsMatch(node.InnerText, @"^[0-9]+時"))
+                if (Regex.IsMatch(node.InnerText, @"[0-9]+時"))
                 {
-                    time_array.Add(node.InnerText);
+                    // 〇〇時の前にスペースが入るようになったため（v1.8.4）
+                    time_array.Add(node.InnerText.Replace(" ", ""));
                     weather_flag = true;
 
                     // 2週目用（夜中3時以降）
@@ -875,6 +879,8 @@ namespace WeatherBrowser
 
             foreach (HtmlNode node in nodeList)
             {
+
+                //MessageBox.Show(node.InnerText);
                 //if (node.InnerText.Contains("時"))
                 // 【今日・明日】～時の直後に天気が8個続く
                 if (Regex.IsMatch(node.InnerText, @"^[0-9]+時"))
@@ -2496,13 +2502,15 @@ namespace WeatherBrowser
             }
             // 降水量の上値
             if (Properties.Settings.Default.bool_max_rain && rain_array[i] != "---" && 
-                int.Parse(rain_array[i]) >= int.Parse(Properties.Settings.Default.max_rain))
+                //int.Parse(rain_array[i]) >= int.Parse(Properties.Settings.Default.max_rain))
+                double.Parse(rain_array[i]) >= double.Parse(Properties.Settings.Default.max_rain))
             {
                 listView1.Items[i].SubItems[6].BackColor = Properties.Settings.Default.color_max_rain;
             }
             // 降水量の下値
-            if (Properties.Settings.Default.bool_min_rain && rain_array[i] != "---" && 
-                int.Parse(rain_array[i]) <= int.Parse(Properties.Settings.Default.min_rain))
+            if (Properties.Settings.Default.bool_min_rain && rain_array[i] != "---" &&
+                //int.Parse(rain_array[i]) <= int.Parse(Properties.Settings.Default.min_rain))
+                double.Parse(rain_array[i]) <= double.Parse(Properties.Settings.Default.min_rain))
             {
                 listView1.Items[i].SubItems[6].BackColor = Properties.Settings.Default.color_min_rain;
             }
