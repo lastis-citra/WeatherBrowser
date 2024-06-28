@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("lastis")]
 [assembly: AssemblyProduct("WeatherBrowser")]
-[assembly: AssemblyCopyright("Copyright © 2010-2023 lastis")]
+[assembly: AssemblyCopyright("Copyright © 2010-2024 lastis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
