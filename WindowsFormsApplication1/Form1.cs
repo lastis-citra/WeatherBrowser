@@ -572,10 +572,10 @@ namespace WeatherBrowser
                     string date_text = node.ChildNodes[0].InnerText.Replace('-', ' ').Trim() + node.ChildNodes[1].InnerText + node.ChildNodes[2].InnerText;
                     for (int k = 0; k < 8; k++)
                     {
-                        date_array.Add(date_text);
+                        date_array.Add(date_text + ")");
                     }
                     // date_array2にも1回分ずつ入れておく
-                    date_array2.Add(date_text);
+                    date_array2.Add(date_text + ")");
                     date_count++;
 
                     if (date_count >= 2)
