@@ -294,10 +294,32 @@ namespace WeatherBrowser
             }
             catch (Exception e2)
             {
-                // 地域ファイルが存在しない場合
-                MessageBox.Show(
-                    "地域設定ファイルが見つかりません。設定を開き、データ取得ボタンを押してください。",
-                    "設定ファイルチェック");
+                // エラー情報をログファイルに保存
+                string errorLogPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "error_log.txt");
+                try
+                {
+                    string errorInfo = "=== エラー情報 ===\n" +
+                        "時刻: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\n" +
+                        "エラーの種類: " + e2.GetType().Name + "\n" +
+                        "詳細: " + e2.Message + "\n\n" +
+                        "カレントディレクトリ: " + Directory.GetCurrentDirectory() + "\n\n" +
+                        "スタックトレース:\n" + e2.StackTrace;
+                    
+                    System.IO.File.WriteAllText(errorLogPath, errorInfo, Encoding.UTF8);
+                    
+                    MessageBox.Show(
+                        "地域設定ファイルが見つかりません。設定を開き、データ取得ボタンを押してください。\n\n" +
+                        "詳細情報は " + errorLogPath + " に保存されました。",
+                        "設定ファイルチェック");
+                }
+                catch
+                {
+                    MessageBox.Show(
+                        "地域設定ファイルが見つかりません。設定を開き、データ取得ボタンを押してください。\n\n" + 
+                        "エラー内容: " + e2.GetType().Name + "\n" +
+                        "詳細: " + e2.Message,
+                        "設定ファイルチェック");
+                }
             }
         }
 
@@ -1201,21 +1223,26 @@ namespace WeatherBrowser
             //MessageBox.Show(wet_array.Count.ToString());
             for (i = 0; i < 16; i++)
             {
-                windst_array[i] = windst_array[i].Replace("\n", "");
+                // キャッシュ書き込み時に改行を削除
+                string cleanDate = date_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanTime = time_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanWeather = weather_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanWinddr = winddr_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanWindst = windst_array[i].Replace("\n", "").Replace("\r", "");
 
                 DispListView1(date_array[i], time_array[i], weather_array[i], temp_array[i],
                     wet_array[i], rain_array[i], winddr_array[i], windst_array[i], ico_array[i]);
 
                 // キャッシュデータの書き出し
                 sw2.Write(
-                    date_array[i] + "," +
-                    time_array[i] + "," +
-                    weather_array[i] + "," +
+                    cleanDate + "," +
+                    cleanTime + "," +
+                    cleanWeather + "," +
                     temp_array[i] + "," +
                     wet_array[i] + "," +
                     rain_array[i] + "," +
-                    winddr_array[i] + "," +
-                    windst_array[i] + "," +
+                    cleanWinddr + "," +
+                    cleanWindst + "," +
                     ico_array[i] + "\n"
                     );
 
@@ -1288,17 +1315,24 @@ namespace WeatherBrowser
                 if (int.Parse(min_temp_array2[i]) < min_min_temp) { min_min_temp = int.Parse(min_temp_array2[i]); }
                 if (int.Parse(max_temp_array2[i]) > max_max_temp) { max_max_temp = int.Parse(max_temp_array2[i]); }
 
-                // キャッシュデータの書き出し
+                // キャッシュデータの書き出し（改行を削除）
+                string cleanDate2 = date_array2[i].Replace("\n", "").Replace("\r", "");
+                string cleanWeather2 = weather_array2[i].Replace("\n", "").Replace("\r", "");
+                string cleanWash = wash_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanUlVio = ul_vio_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanUmb = umb_array[i].Replace("\n", "").Replace("\r", "");
+                string cleanStar = star_array[i].Replace("\n", "").Replace("\r", "");
+
                 sw3.Write(
-                    date_array2[i] + "," +
-                    weather_array2[i] + "," +
+                    cleanDate2 + "," +
+                    cleanWeather2 + "," +
                     max_temp_array2[i] + "," +
                     min_temp_array2[i] + "," +
                     rain_array2[i] + "," +
-                    wash_array[i] + "," +
-                    ul_vio_array[i] + "," +
-                    umb_array[i] + "," + 
-                    star_array[i] + "," +
+                    cleanWash + "," +
+                    cleanUlVio + "," +
+                    cleanUmb + "," + 
+                    cleanStar + "," +
                     ico_array2[i] + "\n"
                     );
 
@@ -1343,8 +1377,12 @@ namespace WeatherBrowser
             string filePath5 = @"./cache/textbox1_" + st_l + ".cache";
             StreamWriter sw5 = new StreamWriter(filePath5, false, Encoding.GetEncoding(65001));
 
+            // label7, label8 の改行を削除してから書き込み
+            string cleanLabel7 = label7.Text.Replace("\n", "").Replace("\r", "");
+            string cleanLabel8 = label8.Text.Replace("\n", "").Replace("\r", "");
+
             sw5.Write(
-                label7.Text + "," + label8.Text + "\n" +
+                cleanLabel7 + "," + cleanLabel8 + "\n" +
                 textBox1.Text + "\n"
                 );
             sw5.Close();
@@ -1370,9 +1408,13 @@ namespace WeatherBrowser
             string filePath = @"./cache/listview3_" + st_n + ".cache";
             StreamWriter sw = new StreamWriter(filePath, false, Encoding.GetEncoding(65001));
 
+            // label5, label6 の改行を削除してか書き込み
+            string cleanLabel5 = label5.Text.Replace("\n", "").Replace("\r", "");
+            string cleanLabel6 = label6.Text.Replace("\n", "").Replace("\r", "");
+
             sw.Write(
-                label5.Text + "," +
-                label6.Text + "\n"
+                cleanLabel5 + "," +
+                cleanLabel6 + "\n"
                 );
 
             for (int j = 0; j < 2; j++)
@@ -2141,28 +2183,37 @@ namespace WeatherBrowser
 
                         if (i == -1)
                         {
-                            label2.Text = row[0];
-                            label3.Text = row[1];
-                            gray_num = int.Parse(row[2]);
+                            if (row.Length >= 3)
+                            {
+                                label2.Text = row[0];
+                                label3.Text = row[1];
+                                gray_num = int.Parse(row[2]);
+                            }
                         }
                         else
                         {
-                            DispListView1(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]);
+                            if (row.Length >= 9)
+                            {
+                                DispListView1(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]);
 
-                            temp_array.Add(row[3]);
-                            wet_array.Add(row[4]);
-                            rain_array.Add(row[5]);
-                            windst_array.Add(row[7]);
+                                temp_array.Add(row[3]);
+                                wet_array.Add(row[4]);
+                                rain_array.Add(row[5]);
+                                windst_array.Add(row[7]);
 
-                            // UseItemStyleForSubItemsをfalseにする
-                            // subitemごとに色を付け替えるため
-                            listView1.Items[i].UseItemStyleForSubItems = false;
+                                // UseItemStyleForSubItemsをfalseにする
+                                // subitemごとに色を付け替えるため
+                                if (i < listView1.Items.Count)
+                                {
+                                    listView1.Items[i].UseItemStyleForSubItems = false;
 
-                            // 条件に応じてスタイル変更
-                            ChangeColorView1(i);
+                                    // 条件に応じてスタイル変更
+                                    ChangeColorView1(i);
 
-                            //this.ChangeWeatherIcon(row[2], i);
-                            ChangeWeatherIconListView1(row[8], i);
+                                    //this.ChangeWeatherIcon(row[2], i);
+                                    ChangeWeatherIconListView1(row[8], i);
+                                }
+                            }
                         }
                         i++;
                     }
@@ -2204,26 +2255,32 @@ namespace WeatherBrowser
 
                         if (i == -1)
                         {
-                            label1.Text = row[0];
-                            label4.Text = row[1];
-                            gray_num2 = int.Parse(row[2]);
+                            if (row.Length >= 3)
+                            {
+                                label1.Text = row[0];
+                                label4.Text = row[1];
+                                gray_num2 = int.Parse(row[2]);
+                            }
                         }
                         else
                         {
-                            DispListView2(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]);
+                            if (row.Length >= 10)
+                            {
+                                DispListView2(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]);
 
-                            max_temp_array2.Add(row[2]);
-                            min_temp_array2.Add(row[3]);
-                            wash_array.Add(row[5]);
-                            ul_vio_array.Add(row[6]);
-                            umb_array.Add(row[7]);
-                            star_array.Add(row[8]);
+                                max_temp_array2.Add(row[2]);
+                                min_temp_array2.Add(row[3]);
+                                wash_array.Add(row[5]);
+                                ul_vio_array.Add(row[6]);
+                                umb_array.Add(row[7]);
+                                star_array.Add(row[8]);
 
-                            if (int.Parse(row[3]) < min_min_temp) { min_min_temp = int.Parse(row[3]); }
-                            if (int.Parse(row[2]) > max_max_temp) { max_max_temp = int.Parse(row[2]); }
+                                if (int.Parse(row[3]) < min_min_temp) { min_min_temp = int.Parse(row[3]); }
+                                if (int.Parse(row[2]) > max_max_temp) { max_max_temp = int.Parse(row[2]); }
 
-                            //this.ChangeWeatherIcon2(row[1], i);
-                            ChangeWeatherIconListView2(row[9], i);
+                                //this.ChangeWeatherIcon2(row[1], i);
+                                ChangeWeatherIconListView2(row[9], i);
+                            }
                         }
                         i++;
                     }
@@ -2279,8 +2336,14 @@ namespace WeatherBrowser
 
                 // UseItemStyleForSubItemsをfalseにする
                 // subitemごとに色を付け替えるため
-                listViewWarnNotice.Items[0].UseItemStyleForSubItems = false;
-                listViewWarnNotice.Items[1].UseItemStyleForSubItems = false;
+                if (listViewWarnNotice.Items.Count > 0)
+                {
+                    listViewWarnNotice.Items[0].UseItemStyleForSubItems = false;
+                }
+                if (listViewWarnNotice.Items.Count > 1)
+                {
+                    listViewWarnNotice.Items[1].UseItemStyleForSubItems = false;
+                }
 
                 using (parser)
                 {
@@ -2302,38 +2365,44 @@ namespace WeatherBrowser
 
                         if (i == 0)
                         {
-                            label5.Text = row[0];
-                            label6.Text = row[1];
+                            if (row.Length >= 2)
+                            {
+                                label5.Text = row[0];
+                                label6.Text = row[1];
+                            }
                         }
                         else
                         {
-                            if (row.Length > 2 && row[2].Equals("True"))
+                            if (row.Length >= 2 && j < listViewWarnNotice.Items.Count && k + 1 < listViewWarnNotice.Items[j].SubItems.Count)
                             {
+                                if (row.Length > 2 && row[2].Equals("True"))
+                                {
+                                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                                }
+                                else if (row[1].Equals("True"))
+                                {
                                     listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
-                            }
-                            else if (row[1].Equals("True"))
-                            {
-                                listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                                listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
-                            }
-                            else if (row[0].Equals("True"))
-                            {
-                                listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
-                            }
-                            else
-                            {
-                                listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
-                            }
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
+                                }
+                                else if (row[0].Equals("True"))
+                                {
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
+                                }
+                                else
+                                {
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
+                                }
 
-                            if (k < 8)
-                            {
-                                k++;
-                            }
-                            else
-                            {
-                                j++;
-                                k = 0;
+                                if (k < 8)
+                                {
+                                    k++;
+                                }
+                                else
+                                {
+                                    j++;
+                                    k = 0;
+                                }
                             }
                         }
                         i++;
@@ -2364,12 +2433,18 @@ namespace WeatherBrowser
 
                         if (i == 0)
                         {
-                            label7.Text = row[0];
-                            label8.Text = row[1];
+                            if (row.Length >= 2)
+                            {
+                                label7.Text = row[0];
+                                label8.Text = row[1];
+                            }
                         }
                         else
                         {
-                            textBox1.Text += row[0] + "\r\n";
+                            if (row.Length >= 1)
+                            {
+                                textBox1.Text += row[0] + "\r\n";
+                            }
                         }
                         i++;
                     }
