@@ -59,6 +59,7 @@ namespace WeatherBrowser
         List<string> star_array = new List<string>();
         bool[,] notice_array = new bool[2, 9];
         bool[,] warning_array = new bool[2, 9];
+        bool[,] urgent_array = new bool[2, 9];
         bool[,] special_array = new bool[2, 9];
         string wash_start_day = string.Empty;
         string ul_vio_start_day = string.Empty;
@@ -554,6 +555,7 @@ namespace WeatherBrowser
             star_array.Clear();
             warning_array.Initialize();
             notice_array.Initialize();
+            urgent_array.Initialize();
             special_array.Initialize();
             wash_start_day = string.Empty;
             ul_vio_start_day = string.Empty;
@@ -567,6 +569,7 @@ namespace WeatherBrowser
                 {
                     warning_array[j,k] = false;
                     notice_array[j,k] = false;
+                    urgent_array[j, k] = false;
                     special_array[j, k] = false;
                 }
             }
@@ -1116,6 +1119,11 @@ namespace WeatherBrowser
                             string tmp_sp = child.ChildNodes[0].ChildNodes[0].InnerText;
                             special_array = ChangeStatusWarnNotice(tmp_sp, special_array);
                         }
+                        if (child.ChildNodes[0].Attributes["class"] == "icoUrgentWarning")
+                        {
+                            string tmp_urg = child.ChildNodes[0].ChildNodes[0].InnerText;
+                            urgent_array = ChangeStatusWarnNotice(tmp_urg, urgent_array);
+                        }
                         if (child.ChildNodes[0].Attributes["class"] == "icoWarning" ||
                             child.ChildNodes[0].Attributes["class"] == "icoWarnToEmg")
                         {
@@ -1125,12 +1133,10 @@ namespace WeatherBrowser
                         if (child.ChildNodes[0].Attributes["class"] == "icoAdvisory" ||
                             child.ChildNodes[0].Attributes["class"] == "icoAdvToWarn")
                         {
-                            //MessageBox.Show(child.ChildNodes[0].ChildNodes[0].InnerText);
                             string tmp_alert = child.ChildNodes[0].ChildNodes[0].InnerText;
                             notice_array = ChangeStatusWarnNotice(tmp_alert, notice_array);
                         }
                     }
-                    break;
                 }
             }
 
@@ -1402,6 +1408,7 @@ namespace WeatherBrowser
             listViewWarnNotice.Items[1].UseItemStyleForSubItems = false;
 
             Color specialColor = Color.FromArgb(148, 0, 211);
+            Color urgentColor = Color.FromArgb(188, 12, 174);
             Color warningColor = Color.FromArgb(204, 0, 0);
             Color noticeColor = Color.FromArgb(255, 217, 102);
 
@@ -1421,25 +1428,33 @@ namespace WeatherBrowser
             {
                 for (int k = 0; k < 9; k++)
                 {
-                    sw.Write(notice_array[j, k] + "," + warning_array[j, k] + "," + special_array[j, k] + "\n");
+                    sw.Write(notice_array[j, k] + "," + warning_array[j, k] + "," + urgent_array[j, k] + "," + special_array[j, k] + "\n");
 
-                    if (notice_array[j, k])
+                    // 優先度: 特別警報 > 緊急警報 > 警報 > 注意報
+                    if (special_array[j, k])
                     {
-                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                    }
+                    else if (urgent_array[j, k])
+                    {
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = urgentColor;
                     }
                     else if (warning_array[j, k])
                     {
                         listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
                         listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
                     }
-                    else if (special_array[j, k])
+                    else if (notice_array[j, k])
                     {
-                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Black;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
                     }
                     else
                     {
                         listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
+                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = Color.Transparent;
                     }
                 }
             }
@@ -2354,6 +2369,7 @@ namespace WeatherBrowser
                     int j = 0;
                     int k = 0;
                     Color specialColor = Color.FromArgb(148, 0, 211);
+                    Color urgentColor = Color.FromArgb(188, 12, 174);
                     Color warningColor = Color.FromArgb(204, 0, 0);
                     Color noticeColor = Color.FromArgb(255, 217, 102);
 
@@ -2375,10 +2391,15 @@ namespace WeatherBrowser
                         {
                             if (row.Length >= 2 && j < listViewWarnNotice.Items.Count && k + 1 < listViewWarnNotice.Items[j].SubItems.Count)
                             {
-                                if (row.Length > 2 && row[2].Equals("True"))
+                                if (row.Length > 2 && row[3].Equals("True"))
                                 {
                                         listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
                                         listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                                }
+                                else if (row[2].Equals("True"))
+                                {
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = urgentColor;
                                 }
                                 else if (row[1].Equals("True"))
                                 {
@@ -2814,12 +2835,35 @@ namespace WeatherBrowser
         }
 
         private bool[,] ChangeStatusWarnNotice(string text, bool[,] array){
+            // まず正規化: 「危険警報」「注意報」「警報」などの語を取り除き、余分な空白を削除する
+            if (!string.IsNullOrEmpty(text))
+            {
+                // 全角スペースなども \s に含まれるようにトリム
+                text = System.Text.RegularExpressions.Regex.Replace(text, "(特別警報|危険警報級|危険警報|危険警報級|危険警報|危険警報|危険警報|危険警報|危険警報|危険|警報級|警報|注意報)", "");
+                text = text.Trim();
+            }
+
+            // 複数の警報が連結されている場合に備え、区切り文字で分割してそれぞれ処理する
+            if (text.IndexOfAny(new char[]{',','、','/','／',' '}) >= 0)
+            {
+                string[] parts = System.Text.RegularExpressions.Regex.Split(text, "[、,/／,\\s]+");
+                foreach (string p in parts)
+                {
+                    if (string.IsNullOrEmpty(p)) continue;
+                    array = ChangeStatusWarnNotice(p, array);
+                }
+                return array;
+            }
+
             switch(text){
                 case "大雨":
                     array[0,0] = true;
                     break;
                 case "洪水":
                     array[0,1] = true;
+                    break;
+                case "氾濫":
+                    // GUI に現状存在しないため、ここでは扱わない
                     break;
                 case "暴風":
                     array[0,2] = true;
@@ -2856,6 +2900,9 @@ namespace WeatherBrowser
                     break;
                 case "なだれ":
                     array[1,4] = true;
+                    break;
+                case "土砂災害":
+                    // GUI に現状存在しないため、ここでは扱わない
                     break;
                 case "低温":
                     array[1,5] = true;
