@@ -2391,22 +2391,27 @@ namespace WeatherBrowser
                         {
                             if (row.Length >= 2 && j < listViewWarnNotice.Items.Count && k + 1 < listViewWarnNotice.Items[j].SubItems.Count)
                             {
-                                if (row.Length > 2 && row[3].Equals("True"))
+                                bool isSpecial = row.Length > 3 && row[3].Equals("True", StringComparison.OrdinalIgnoreCase);
+                                bool isUrgent = row.Length > 2 && row[2].Equals("True", StringComparison.OrdinalIgnoreCase);
+                                bool isWarning = row.Length > 1 && row[1].Equals("True", StringComparison.OrdinalIgnoreCase);
+                                bool isNotice = row.Length > 0 && row[0].Equals("True", StringComparison.OrdinalIgnoreCase);
+
+                                if (isSpecial)
                                 {
-                                        listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
-                                        listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
+                                    listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = specialColor;
                                 }
-                                else if (row[2].Equals("True"))
+                                else if (isUrgent)
                                 {
                                     listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
                                     listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = urgentColor;
                                 }
-                                else if (row[1].Equals("True"))
+                                else if (isWarning)
                                 {
                                     listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.White;
                                     listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = warningColor;
                                 }
-                                else if (row[0].Equals("True"))
+                                else if (isNotice)
                                 {
                                     listViewWarnNotice.Items[j].SubItems[k + 1].BackColor = noticeColor;
                                 }
@@ -2415,7 +2420,7 @@ namespace WeatherBrowser
                                     listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
                                 }
 
-                                if (k < 10)
+                                if (k < 9)
                                 {
                                     k++;
                                 }
