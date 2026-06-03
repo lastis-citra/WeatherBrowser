@@ -81,6 +81,7 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -337,7 +338,7 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.testToolStripMenuItem.Text = "（履歴はありません）";
             // 
             // 終了EToolStripMenuItem
@@ -413,7 +414,8 @@
             this.columnHeader7,
             this.columnHeader8,
             this.columnHeader9,
-            this.columnHeader10});
+            this.columnHeader10,
+            this.columnHeader11});
             this.listViewWarnNotice.GridLines = true;
             this.listViewWarnNotice.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listViewWarnNotice.HideSelection = false;
@@ -435,55 +437,60 @@
             this.columnHeader2.Tag = "";
             this.columnHeader2.Text = "";
             this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader2.Width = 56;
+            this.columnHeader2.Width = 50;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "";
             this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader3.Width = 56;
+            this.columnHeader3.Width = 50;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "";
             this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader4.Width = 56;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Text = "";
             this.columnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader5.Width = 56;
+            this.columnHeader5.Width = 50;
             // 
             // columnHeader6
             // 
             this.columnHeader6.Text = "";
             this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader6.Width = 56;
+            this.columnHeader6.Width = 50;
             // 
             // columnHeader7
             // 
             this.columnHeader7.Text = "";
             this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader7.Width = 56;
+            this.columnHeader7.Width = 50;
             // 
             // columnHeader8
             // 
             this.columnHeader8.Text = "";
             this.columnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader8.Width = 56;
+            this.columnHeader8.Width = 50;
             // 
             // columnHeader9
             // 
             this.columnHeader9.Text = "";
             this.columnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader9.Width = 56;
+            this.columnHeader9.Width = 50;
             // 
             // columnHeader10
             // 
             this.columnHeader10.Text = "";
             this.columnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader10.Width = 56;
+            this.columnHeader10.Width = 50;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "";
+            this.columnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader11.Width = 40;
             // 
             // label5
             // 
@@ -614,9 +621,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;

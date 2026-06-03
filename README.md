@@ -8,4 +8,4 @@ weatherIcon.zipを解凍し，weatherIconフォルダをWeatherBrowser.exeと同
 
 ## ビルド環境
 
-Microsoft Visual Studio 2022（Community / Professional）
+Microsoft Visual Studio 2026（Community / Professional）

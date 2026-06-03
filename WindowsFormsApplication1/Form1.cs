@@ -57,10 +57,10 @@ namespace WeatherBrowser
         List<string> ul_vio_array = new List<string>();
         List<string> umb_array = new List<string>();
         List<string> star_array = new List<string>();
-        bool[,] notice_array = new bool[2, 9];
-        bool[,] warning_array = new bool[2, 9];
-        bool[,] urgent_array = new bool[2, 9];
-        bool[,] special_array = new bool[2, 9];
+        bool[,] notice_array = new bool[2, 11];
+        bool[,] warning_array = new bool[2, 11];
+        bool[,] urgent_array = new bool[2, 11];
+        bool[,] special_array = new bool[2, 11];
         string wash_start_day = string.Empty;
         string ul_vio_start_day = string.Empty;
         string umb_start_day = string.Empty;
@@ -565,7 +565,7 @@ namespace WeatherBrowser
 
             for (int j = 0; j < 2; j++)
             {
-                for (int k = 0; k < 9; k++)
+                for (int k = 0; k < 10; k++)
                 {
                     warning_array[j,k] = false;
                     notice_array[j,k] = false;
@@ -1426,7 +1426,7 @@ namespace WeatherBrowser
 
             for (int j = 0; j < 2; j++)
             {
-                for (int k = 0; k < 9; k++)
+                for (int k = 0; k < 10; k++)
                 {
                     sw.Write(notice_array[j, k] + "," + warning_array[j, k] + "," + urgent_array[j, k] + "," + special_array[j, k] + "\n");
 
@@ -2415,7 +2415,7 @@ namespace WeatherBrowser
                                     listViewWarnNotice.Items[j].SubItems[k + 1].ForeColor = Color.Gray;
                                 }
 
-                                if (k < 8)
+                                if (k < 10)
                                 {
                                     k++;
                                 }
@@ -2807,28 +2807,30 @@ namespace WeatherBrowser
             List<string> list_item3 = new List<string>();
             list_item3.Add("");
             list_item3.Add("大雨");
-            list_item3.Add("洪水");
-            list_item3.Add("暴風");
-            list_item3.Add("強風");
-            list_item3.Add("暴風雪");
-            list_item3.Add("風雪");
-            list_item3.Add("大雪");
-            list_item3.Add("波浪");
+            list_item3.Add("氾濫");
+            list_item3.Add("土砂災害");
             list_item3.Add("高潮");
+            list_item3.Add("大雪");
+            list_item3.Add("強風");
+            list_item3.Add("暴風");
+            list_item3.Add("風雪");
+            list_item3.Add("暴風雪");
+            list_item3.Add("波浪");
 
             listViewWarnNotice.Items.Add(new ListViewItem(list_item3.ToArray()));
             list_item3.Clear();
 
             list_item3.Add("");
             list_item3.Add("雷");
-            list_item3.Add("融雪");
             list_item3.Add("濃霧");
             list_item3.Add("乾燥");
             list_item3.Add("なだれ");
-            list_item3.Add("低温");
-            list_item3.Add("霜");
             list_item3.Add("着氷");
             list_item3.Add("着雪");
+            list_item3.Add("融雪");
+            list_item3.Add("霜");
+            list_item3.Add("低温");
+            list_item3.Add("");
 
             listViewWarnNotice.Items.Add(new ListViewItem(list_item3.ToArray()));
             list_item3.Clear();
@@ -2860,60 +2862,60 @@ namespace WeatherBrowser
                     array[0,0] = true;
                     break;
                 case "洪水":
-                    array[0,1] = true;
+                    // 廃止された警報のため無視する
                     break;
                 case "氾濫":
-                    // GUI に現状存在しないため、ここでは扱わない
+                    array[0,1] = true;
                     break;
-                case "暴風":
+                case "土砂災害":
                     array[0,2] = true;
                     break;
-                case "強風":
+                case "高潮":
                     array[0,3] = true;
                     break;
-                case "暴風雪":
+                case "大雪":
                     array[0,4] = true;
                     break;
-                case "風雪":
+                case "強風":
                     array[0,5] = true;
                     break;
-                case "大雪":
+                case "暴風":
                     array[0,6] = true;
                     break;
-                case "波浪":
+                case "風雪":
                     array[0,7] = true;
                     break;
-                case "高潮":
+                case "暴風雪":
                     array[0,8] = true;
+                    break;
+                case "波浪":
+                    array[0,9] = true;
                     break;
                 case "雷":
                     array[1,0] = true;
                     break;
-                case "融雪":
+                case "濃霧":
                     array[1,1] = true;
                     break;
-                case "濃霧":
+                case "乾燥":
                     array[1,2] = true;
                     break;
-                case "乾燥":
+                case "なだれ":
                     array[1,3] = true;
                     break;
-                case "なだれ":
+                case "着氷":
                     array[1,4] = true;
                     break;
-                case "土砂災害":
-                    // GUI に現状存在しないため、ここでは扱わない
-                    break;
-                case "低温":
+                case "着雪":
                     array[1,5] = true;
                     break;
-                case "霜":
+                case "融雪":
                     array[1,6] = true;
                     break;
-                case "着氷":
+                case "霜":
                     array[1,7] = true;
                     break;
-                case "着雪":
+                case "低温":
                     array[1,8] = true;
                     break;
                 default:
